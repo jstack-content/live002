@@ -1,13 +1,7 @@
-import {
-  CheckCircleIcon,
-  CircleIcon,
-  LeafIcon,
-  Trash2Icon,
-  WindIcon,
-} from 'lucide-react';
+import { CheckCircleIcon, CircleIcon, LeafIcon, Trash2Icon, WindIcon } from 'lucide-react';
 
-import { useGlobal } from '../contexts/GlobalContext';
 import { useRenderCounter } from '../hooks/useRenderCounter';
+import { useGlobalStore } from '../store/globalStore';
 import { cn } from '../utils/cn';
 
 import { TodoForm } from './TodoForm';
@@ -15,7 +9,9 @@ import { TodoForm } from './TodoForm';
 export function TodosList() {
   useRenderCounter('TodosList');
 
-  const { todos, toggleTodoDone, removeTodo } = useGlobal();
+  const todos = useGlobalStore((state) => state.todos);
+  const toggleTodoDone = useGlobalStore((state) => state.toggleTodoDone);
+  const removeTodo = useGlobalStore((state) => state.removeTodo);
 
   return (
     <div className="container mx-auto my-10 rounded-lg border border-white/5 p-6">
@@ -40,8 +36,7 @@ export function TodosList() {
               key={todo.id}
               className={cn(
                 'flex items-center justify-between rounded-lg border border-white/5 p-4',
-                todo.done &&
-                  'border-green-400/10 bg-green-400/5 transition-colors',
+                todo.done && 'border-green-400/10 bg-green-400/5 transition-colors',
               )}
             >
               <div>
@@ -62,9 +57,7 @@ export function TodosList() {
                   type="button"
                   className="opacity-80 transition-opacity hover:opacity-100"
                 >
-                  {todo.done && (
-                    <CheckCircleIcon className="h-5 w-5 text-green-400" />
-                  )}
+                  {todo.done && <CheckCircleIcon className="h-5 w-5 text-green-400" />}
                   {!todo.done && <CircleIcon className="h-5 w-5 text-white" />}
                 </button>
 

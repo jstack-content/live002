@@ -24,7 +24,8 @@
     }
   },
   "rules": {
-    "prettier/prettier": "error",
+    // "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "printWidth": 100 }],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",

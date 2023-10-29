@@ -1,20 +1,14 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import { ITodo } from '../entities/ITodo';
 import { IUser } from '../entities/IUser';
 
 interface IGlobalContextValue {
   user: IUser | null;
+  todos: ITodo[];
   login(): void;
   logout(): void;
-  todos: ITodo[];
-  addTodo(title: string, author?: string): void;
+  addTodo(title: string): void;
   toggleTodoDone(todoId: number): void;
   removeTodo(todoId: number): void;
 }
@@ -56,9 +50,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
 
   const toggleTodoDone = useCallback((todoId: number) => {
     setTodos((prevState) =>
-      prevState.map((todo) =>
-        todo.id === todoId ? { ...todo, done: !todo.done } : todo,
-      ),
+      prevState.map((todo) => (todo.id === todoId ? { ...todo, done: !todo.done } : todo)),
     );
   }, []);
 
@@ -79,9 +71,5 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     [loggedUser, login, logout, todos, addTodo, toggleTodoDone, removeTodo],
   );
 
-  return (
-    <GlobalContext.Provider value={contextValue}>
-      {children}
-    </GlobalContext.Provider>
-  );
+  return <GlobalContext.Provider value={contextValue}>{children}</GlobalContext.Provider>;
 }
